@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext,useEffect } from "react";
 import "./Login.css";
 import { Redirect, Link } from "react-router-dom";
 import { AuthContext } from "../AuthContext";
@@ -6,6 +6,12 @@ import {BASE_API} from "../config";
 import { SERVICE_UNAVAILABLE_ERROR } from "../messages";
 
 export default function Login() {
+    const [IsLoading, setIsLoading] = useState(true);
+    useEffect(() => {
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 2500);
+    });
     const [errorMessage, setErrorMessage] = useState(null);
     const {isAuth,login} = useContext(AuthContext);
     const [isPasswordShown, setIsPasswordShown] = useState(false)
@@ -56,8 +62,11 @@ export default function Login() {
 
     return isAuth ?
         <Redirect to="/" />
-        : (
+        : ( 
         <div className="container">
+            {  IsLoading==true?
+            <div className="preloader"></div>:
+      <div className="container">
             <div className="row mb-5">
                 <div className="col-lg-12 text-center">
                     <h1 className="mt-5">Login</h1>
@@ -125,6 +134,7 @@ export default function Login() {
                     </form>
                 </div>
             </div>
+        </div>}
         </div>
     );
 }
